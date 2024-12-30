@@ -3,7 +3,7 @@ import { registerWebModule, NativeModule } from 'expo';
 import { ExpoAliyunOSSModuleEvents } from './ExpoAliyunOSS.types';
 import { Buffer } from 'buffer'
 
-const OSS = require('OSS')
+const OSS = require('ali-oss')
 
 class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
   ossAccessKeyId: string;
