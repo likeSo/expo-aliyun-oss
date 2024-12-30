@@ -24,7 +24,7 @@ class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
         accessKeySecret: this.ossAccessKeySecret,
         authorizationV4: true,
         bucket: this.bucket,
-        endpoint: this.endpoint
+        region: this.endpoint
       })
     }
   }
@@ -40,7 +40,7 @@ class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
         accessKeySecret: this.ossAccessKeySecret,
         authorizationV4: true,
         bucket: this.bucket,
-        endpoint: this.endpoint
+        region: this.endpoint
       })
     }
   }
