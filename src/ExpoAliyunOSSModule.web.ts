@@ -11,6 +11,7 @@ class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
   endpoint: string;
   bucket: string;
   ossClient?: any;
+  region?: string
 
   constructor() {
     super()
@@ -18,13 +19,14 @@ class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
     this.ossAccessKeySecret = process.env.EXPO_PUBLIC_ALIYUN_OSS_ACCESS_KEY_SECRET;
     this.endpoint = process.env.EXPO_PUBLIC_ALIYUN_OSS_ENDPOINT;
     this.bucket = process.env.EXPO_PUBLIC_ALIYUN_OSS_BUCKET;
+    this.region = this.endpoint?.replaceAll('http://', '').replaceAll('https://', '').replaceAll('.aliyuncs.com', '')
     if (this.ossAccessKeyId && this.ossAccessKeySecret) {
       this.ossClient = new OSS({
         accessKeyId: this.ossAccessKeyId,
         accessKeySecret: this.ossAccessKeySecret,
         authorizationV4: true,
         bucket: this.bucket,
-        region: this.endpoint
+        region: this.region
       })
     }
   }
@@ -34,13 +36,14 @@ class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
     this.ossAccessKeySecret = ossAccessKeySecret;
     this.endpoint = endpoint;
     this.bucket = bucket;
+    this.region = this.endpoint?.replaceAll('http://', '').replaceAll('https://', '').replaceAll('.aliyuncs.com', '')
     if (this.ossAccessKeyId && this.ossAccessKeySecret) {
       this.ossClient = new OSS({
         accessKeyId: this.ossAccessKeyId,
         accessKeySecret: this.ossAccessKeySecret,
         authorizationV4: true,
         bucket: this.bucket,
-        region: this.endpoint
+        region: this.region
       })
     }
   }
@@ -54,7 +57,7 @@ class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
     }
     let resolvedFileInfo
     if (fileUriOrBase64.startsWith('data:')) {
-      resolvedFileInfo = Buffer.from(fileUriOrBase64, 'base64')
+      resolvedFileInfo = Buffer.from(fileUriOrBase64.split(',')[1], 'base64')
     } else {
       resolvedFileInfo = fileUriOrBase64.replaceAll('file://', '')
     }
