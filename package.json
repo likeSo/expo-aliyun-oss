@@ -1,6 +1,6 @@
 {
   "name": "expo-aliyun-oss",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Exoo Aliyun OSS module",
   "main": "build/index.js",
   "types": "build/index.d.ts",
