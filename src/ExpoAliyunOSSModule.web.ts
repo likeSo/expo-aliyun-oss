@@ -29,6 +29,22 @@ class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
     }
   }
 
+  initWithAK(ossAccessKeySecretID: string, ossAccessKeySecret: string, bucket: string, endpoint: string): void {
+    this.ossAccessKeyId = ossAccessKeySecretID;
+    this.ossAccessKeySecret = ossAccessKeySecret;
+    this.endpoint = endpoint;
+    this.bucket = bucket;
+    if (this.ossAccessKeyId && this.ossAccessKeySecret) {
+      this.ossClient = new OSS({
+        accessKeyId: this.ossAccessKeyId,
+        accessKeySecret: this.ossAccessKeySecret,
+        authorizationV4: true,
+        bucket: this.bucket,
+        endpoint: this.endpoint
+      })
+    }
+  }
+
   uploadAsync(fileUriOrBase64: string, remoteFilePath: string): Promise<any> {
     if (!this.ossClient) {
       return Promise.reject('OSS client not initialized')

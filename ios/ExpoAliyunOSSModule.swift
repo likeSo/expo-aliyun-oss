@@ -31,7 +31,19 @@ public class ExpoAliyunOSSModule: Module {
                 self.endpoint = endpoint
                 self.bucketName = bucket
             }
-            
+        }
+        
+        Function("initWithAK") { (ossAccessKeySecretID: String,
+                                  ossAccessKeySecret: String,
+                                  bucket: String,
+                                  endpoint: String) in
+            let credential = OSSPlainTextAKSKPairCredentialProvider(plainTextAccessKey: ossAccessKeySecretID,
+                                                                    secretKey: ossAccessKeySecret)
+            let config = OSSClientConfiguration()
+            // TODO: 配置请求超时等信息
+            ossClient = OSSClient(endpoint: endpoint, credentialProvider: credential, clientConfiguration: config)
+            self.endpoint = endpoint
+            self.bucketName = bucket
         }
         
         // Sets constant properties on the module. Can take a dictionary or a closure that returns a dictionary.

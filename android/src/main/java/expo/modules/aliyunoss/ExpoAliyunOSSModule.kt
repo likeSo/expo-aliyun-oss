@@ -61,6 +61,17 @@ class ExpoAliyunOSSModule : Module() {
             endpoint = _endpoint
         }
 
+        Function("initWithAK") { ossAccessKeySecretID: String, ossAccessKeySecret: String, bucket: String, _endpoint: String ->
+            val credentialProvider =
+                OSSPlainTextAKSKCredentialProvider(ossAccessKeySecretID, ossAccessKeySecret)
+            val configuration = ClientConfiguration()
+            // TODO: 设置请求超时等信息
+            ossClient =
+                OSSClient(appContext.reactContext, _endpoint, credentialProvider, configuration)
+            bucketName = bucket
+            endpoint = _endpoint
+        }
+
         AsyncFunction("uploadAsync") { fileUriOrBase64: String, fileKey: String, promise: Promise ->
             val request: PutObjectRequest
             if (fileUriOrBase64.startsWith("data:")
