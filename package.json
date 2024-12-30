@@ -1,0 +1,50 @@
+{
+  "name": "expo-aliyun-oss",
+  "version": "0.1.0",
+  "description": "Exoo Aliyun OSS module",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "expo-module build",
+    "clean": "expo-module clean",
+    "lint": "expo-module lint",
+    "test": "expo-module test",
+    "prepare": "expo-module prepare",
+    "prepublishOnly": "expo-module prepublishOnly",
+    "expo-module": "expo-module",
+    "open:ios": "xed example/ios",
+    "open:android": "open -a \"Android Studio\" example/android",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "expo-aliyun-oss",
+    "ExpoAliyunOSS"
+  ],
+  "repository": "https://github.com/likeSo/expo-aliyun-oss",
+  "bugs": {
+    "url": "https://github.com/likeSo/expo-aliyun-oss/issues"
+  },
+  "author": "Aron <Random1996@163.com> (https://github.com/likeSo)",
+  "license": "MIT",
+  "homepage": "https://github.com/likeSo/expo-aliyun-oss#readme",
+  "dependencies": {
+    "expo": "~52.0.23",
+    "react": "18.3.1",
+    "react-native": "0.76.5",
+    "ali-oss": "^6.22.0"
+  },
+  "devDependencies": {
+    "@types/react": "~18.3.12",
+    "expo-module-scripts": "^4.0.2",
+    "expo": "~52.0.0",
+    "react-native": "0.76.0"
+  },
+  "peerDependencies": {
+    "expo": "*",
+    "react": "*",
+    "react-native": "*"
+  }
+}
