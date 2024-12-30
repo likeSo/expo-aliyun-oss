@@ -36,16 +36,24 @@ npx expo install expo-aliyun-oss
     ]
 ```
 
-Expo config plugin不支持web。所以使用环境变量来配置。
+Expo config plugin不支持web。所以使用环境变量来配置。请注意，expo环境变量必须以`EXPO_PUBLIC`开头：
 
 ```shell
-EXPO_ALIYUN_OSS_ACCESS_KEY_ID=ossAccessKeyId
-EXPO_ALIYUN_OSS_ACCESS_KEY_SECRET=ossAccessKeySecret
-EXPO_ALIYUN_OSS_ENDPOINT=endpoint
-EXPO_ALIYUN_OSS_BUCKET=bucket
+EXPO_PUBLIC_ALIYUN_OSS_ACCESS_KEY_ID=ossAccessKeyId
+EXPO_PUBLIC_ALIYUN_OSS_ACCESS_KEY_SECRET=ossAccessKeySecret
+EXPO_PUBLIC_ALIYUN_OSS_ENDPOINT=endPoint
+EXPO_PUBLIC_ALIYUN_OSS_BUCKET=bucket
 ```
 
 配置好了后直接使用就行了，鉴权以及初始化的部分就算是完成了。
+
+请注意，环境变量在项目中会被直接替换为明文的内容，官方也不建议把key和secret这种东西放在环境变量内，所以在web端，可以使用`initWithAK`方法进行动态初始化：
+
+```ts
+initWithAK(ossAccessKeySecretID: string, ossAccessKeySecret: string, bucket: string, endpoint: string): void;
+```
+
+
 
 
 
