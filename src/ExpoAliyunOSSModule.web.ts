@@ -14,10 +14,10 @@ class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
 
   constructor() {
     super()
-    this.ossAccessKeyId = process.env.EXPO_ALIYUN_OSS_ACCESS_KEY_ID;
-    this.ossAccessKeySecret = process.env.EXPO_ALIYUN_OSS_ACCESS_KEY_SECRET;
-    this.endpoint = process.env.EXPO_ALIYUN_OSS_ENDPOINT;
-    this.bucket = process.env.EXPO_ALIYUN_OSS_BUCKET;
+    this.ossAccessKeyId = process.env.EXPO_PUBLIC_ALIYUN_OSS_ACCESS_KEY_ID;
+    this.ossAccessKeySecret = process.env.EXPO_PUBLIC_ALIYUN_OSS_ACCESS_KEY_SECRET;
+    this.endpoint = process.env.EXPO_PUBLIC_ALIYUN_OSS_ENDPOINT;
+    this.bucket = process.env.EXPO_PUBLIC_ALIYUN_OSS_BUCKET;
     if (this.ossAccessKeyId && this.ossAccessKeySecret) {
       this.ossClient = new OSS({
         accessKeyId: this.ossAccessKeyId,
