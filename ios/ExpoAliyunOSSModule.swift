@@ -45,6 +45,14 @@ public class ExpoAliyunOSSModule: Module {
             self.endpoint = endpoint
             self.bucketName = bucket
         }
+
+        Function("initWithSTS") { (ossAccessKeySecretID: String,
+                                  ossAccessKeySecret: String,
+                                      token: String,
+                                  bucket: String,
+                                  endpoint: String) in
+                
+        }
         
         // Sets constant properties on the module. Can take a dictionary or a closure that returns a dictionary.
         Constants([

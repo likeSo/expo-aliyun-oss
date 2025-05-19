@@ -1,6 +1,6 @@
-import { NativeModule, requireNativeModule } from 'expo';
+import { NativeModule, requireNativeModule } from "expo";
 
-import { ExpoAliyunOSSModuleEvents } from './ExpoAliyunOSS.types';
+import { ExpoAliyunOSSModuleEvents } from "./ExpoAliyunOSS.types";
 
 declare class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
   /**
@@ -13,7 +13,7 @@ declare class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents
    * 批量删除文件
    * @param fileKeys 待删除的文件列表
    */
-  deleteObjectsAsync(fileKeys: string[]): Promise<any>
+  deleteObjectsAsync(fileKeys: string[]): Promise<any>;
 
   /**
    * 使用阿里云AK初始化
@@ -22,8 +22,29 @@ declare class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents
    * @param bucket 阿里云bucket
    * @param endpoint 阿里云endpoint，比如oss-cn-beijing.aliyuncs.com
    */
-  initWithAK(ossAccessKeySecretID: string, ossAccessKeySecret: string, bucket: string, endpoint: string): void;
+  initWithAK(
+    ossAccessKeySecretID: string,
+    ossAccessKeySecret: string,
+    bucket: string,
+    endpoint: string
+  ): void;
+
+  /**
+   * 
+   * @param ossAccessKeySecretID 阿里云Access Key ID
+   * @param ossAccessKeySecret 阿里云Access Key Secret
+   * @param token 临时token
+   * @param bucket 阿里云bucket
+   * @param endpoint 阿里云endpoint，比如oss-cn-beijing.aliyuncs.com
+   */
+  initWithSTS(
+    ossAccessKeySecretID: string,
+    ossAccessKeySecret: string,
+    token: string,
+    bucket: string,
+    endpoint: string
+  ): void;
 }
 
 // This call loads the native module object from the JSI.
-export default requireNativeModule<ExpoAliyunOSSModule>('ExpoAliyunOSS');
+export default requireNativeModule<ExpoAliyunOSSModule>("ExpoAliyunOSS");
