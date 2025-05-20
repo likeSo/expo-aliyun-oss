@@ -47,11 +47,18 @@ public class ExpoAliyunOSSModule: Module {
         }
 
         Function("initWithSTS") { (ossAccessKeySecretID: String,
-                                  ossAccessKeySecret: String,
-                                      token: String,
-                                  bucket: String,
-                                  endpoint: String) in
-                
+                                   ossAccessKeySecret: String,
+                                   token: String,
+                                   bucket: String,
+                                   endpoint: String) in
+            let credential = OSSStsTokenCredentialProvider(accessKeyId: ossAccessKeySecretID,
+                                                           secretKeyId: ossAccessKeySecret,
+                                                           securityToken: token)
+            let config = OSSClientConfiguration()
+                // TODO: 配置请求超时等信息
+            ossClient = OSSClient(endpoint: endpoint, credentialProvider: credential, clientConfiguration: config)
+            self.endpoint = endpoint
+            self.bucketName = bucket
         }
         
         // Sets constant properties on the module. Can take a dictionary or a closure that returns a dictionary.
@@ -106,19 +113,5 @@ public class ExpoAliyunOSSModule: Module {
                 })
             }
         }
-        
-        
-        // // Enables the module to be used as a native view. Definition components that are accepted as part of the
-        // // view definition: Prop, Events.
-        // View(ExpoAliyunOSSView.self) {
-        //     // Defines a setter for the `url` prop.
-        //     Prop("url") { (view: ExpoAliyunOSSView, url: URL) in
-        //         if view.webView.url != url {
-        //             view.webView.load(URLRequest(url: url))
-        //         }
-        //     }
-            
-        //     Events("onLoad")
-        // }
     }
 }

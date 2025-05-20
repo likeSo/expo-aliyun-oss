@@ -72,6 +72,20 @@ class ExpoAliyunOSSModule : Module() {
             endpoint = _endpoint
         }
 
+        Function("initWithSTS") { ossAccessKeySecretID: String, ossAccessKeySecret: String, token: String, bucket: String, endpoint: String ->
+            val credentialProvider = OSSStsTokenCredentialProvider(
+                ossAccessKeySecretID,
+                ossAccessKeySecret,
+                token
+            )
+            val configuration = ClientConfiguration()
+            // TODO: 设置请求超时等信息
+            ossClient =
+                OSSClient(appContext.reactContext, _endpoint, credentialProvider, configuration)
+            bucketName = bucket
+            endpoint = _endpoint
+        }
+
         AsyncFunction("uploadAsync") { fileUriOrBase64: String, fileKey: String, promise: Promise ->
             val request: PutObjectRequest
             if (fileUriOrBase64.startsWith("data:")
@@ -159,16 +173,5 @@ class ExpoAliyunOSSModule : Module() {
 
         // Defines event names that the module can send to JavaScript.
         Events("uploadProgress")
-
-        // Enables the module to be used as a native view. Definition components that are accepted as part of
-        // the view definition: Prop, Events.
-        // View(ExpoAliyunOSSView::class) {
-        //     // Defines a setter for the `url` prop.
-        //     Prop("url") { view: ExpoAliyunOSSView, url: URL ->
-        //         view.webView.loadUrl(url.toString())
-        //     }
-        //     // Defines an event that the view can send to JavaScript.
-        //     Events("onLoad")
-        // }
     }
 }

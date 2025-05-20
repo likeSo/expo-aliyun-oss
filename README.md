@@ -1,14 +1,16 @@
 ## Expo Aliyun OSS
+阿里云OSS SDK for React Native, Expo.
 
-> Expo Aliyun OSS是阿里云OSS上传的expo包，主要用来上传文件到阿里云服务器的。上传文件到阿里云本身不难，用fetch配合formdata即可实现，那为什么还要单独写一个包？
->
-> 首先，React Native上传，在移动端和web端有差异，web端可以直接上传`File`对象，而移动端需要一个`Blob`对象，也就是类似于这样的对象：
-> `{uri, name, type}`。
-> 其次，你可能需要配置阿里云鉴权，需要计算`Authorization`以及`Signature`，反正我是想想都头大，所以有了这个库。
->
-> 最后，阿里云对formdata的解析方式可能跟标准协议不一致，我在上传的时候一直报FieldItemTooLong问题，这里要感谢[这位博主](https://phyng.com/2024/05/27/aliyun-oss.html)。
->
-> 此框架分别调用了安卓和iOS以及NodeJS的原生阿里云包。
+## 引言
+上传文件到阿里云本身不难，用fetch配合formdata即可实现，那为什么还要单独写一个包？
+
+首先，React Native上传，在移动端和web端有差异，web端可以直接上传`File`对象，而移动端需要一个`Blob`对象，也就是类似于这样的对象：
+`{uri, name, type}`。
+其次，你可能需要配置阿里云鉴权，需要计算`Authorization`以及`Signature`，反正我是想想都头大，所以有了这个库。
+
+最后，阿里云对formdata的解析方式可能跟标准协议不一致，我在上传的时候一直报FieldItemTooLong问题，这里要感谢[这位博主](https://phyng.com/2024/05/27/aliyun-oss.html)。
+
+此框架分别调用了安卓和iOS以及NodeJS的原生阿里云包。不只是文件上传，目标是支持所有阿里云原生SDK的功能。
 
 ## 安装 Install
 
@@ -47,17 +49,16 @@ EXPO_PUBLIC_ALIYUN_OSS_BUCKET=bucket
 
 配置好了后直接使用就行了，鉴权以及初始化的部分就算是完成了。
 
-请注意，环境变量在项目中会被直接替换为明文的内容，官方也不建议把key和secret这种东西放在环境变量内，所以在web端，可以使用`initWithAK`方法进行动态初始化：
-
-```ts
-initWithAK(ossAccessKeySecretID: string, ossAccessKeySecret: string, bucket: string, endpoint: string): void;
-```
+请注意，环境变量在项目中会被直接替换为明文的内容，官方也不建议把key和secret这种东西放在环境变量内，所以在web端，可以使用代码的方式进行动态初始化。
 
 
 
 
 
 ## 使用 Usage
+
+如果你已经配置好了Config Plugin，那么直接使用就行了，初始化部分已经完成了。
+否则在以下的两个初始化方法中任选一个即可。
 
 ```ts
 import ExpoAliyunOSS from 'expo-aliyun-oss';
@@ -92,6 +93,37 @@ function App() {
 ## API
 
 ```ts
+
+  /**
+   * 使用阿里云AK初始化。生命周期内只需要初始化一次，好用，但是安全性较低。目前阿里云官方不推荐这种初始化方式。
+   * @param ossAccessKeySecretID 阿里云Access Key ID
+   * @param ossAccessKeySecret 阿里云Access Key Secret
+   * @param bucket 阿里云bucket
+   * @param endpoint 阿里云endpoint，比如oss-cn-beijing.aliyuncs.com
+   */
+  initWithAK(
+    ossAccessKeySecretID: string,
+    ossAccessKeySecret: string,
+    bucket: string,
+    endpoint: string
+  ): void;
+
+  /**
+   * 使用阿里云STS临时安全令牌初始化。token存在有效期限制，生命周期内可以多次初始化。
+   * @param ossAccessKeySecretID 阿里云Access Key ID
+   * @param ossAccessKeySecret 阿里云Access Key Secret
+   * @param token 临时token
+   * @param bucket 阿里云bucket
+   * @param endpoint 阿里云endpoint，比如oss-cn-beijing.aliyuncs.com
+   */
+  initWithSTS(
+    ossAccessKeySecretID: string,
+    ossAccessKeySecret: string,
+    token: string,
+    bucket: string,
+    endpoint: string
+  ): void;
+
   /**
    * 异步上传文件 
    * @param fileUriOrBase64 文件本地URI或者Base64格式的文件内容
@@ -107,6 +139,6 @@ function App() {
 
 ## 线路图 Roadmap
 
-- [ ] 使用STS临时安全令牌的方式初始化阿里云
+- [x] 使用STS临时安全令牌的方式初始化阿里云
 - [ ] `.listBuckets()`
 - [ ] `.createBucket()`

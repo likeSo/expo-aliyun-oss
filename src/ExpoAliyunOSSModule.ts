@@ -16,7 +16,7 @@ declare class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents
   deleteObjectsAsync(fileKeys: string[]): Promise<any>;
 
   /**
-   * 使用阿里云AK初始化
+   * 使用阿里云AK初始化。生命周期内只需要初始化一次，好用，但是安全性较低。目前阿里云官方不推荐这种初始化方式。
    * @param ossAccessKeySecretID 阿里云Access Key ID
    * @param ossAccessKeySecret 阿里云Access Key Secret
    * @param bucket 阿里云bucket
@@ -30,7 +30,7 @@ declare class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents
   ): void;
 
   /**
-   * 
+   * 使用阿里云STS临时安全令牌初始化。token存在有效期限制，生命周期内可以多次初始化。
    * @param ossAccessKeySecretID 阿里云Access Key ID
    * @param ossAccessKeySecret 阿里云Access Key Secret
    * @param token 临时token
