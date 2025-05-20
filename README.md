@@ -53,8 +53,6 @@ EXPO_PUBLIC_ALIYUN_OSS_BUCKET=bucket
 
 
 
-
-
 ## 使用 Usage
 
 如果你已经配置好了Config Plugin，那么直接使用就行了，初始化部分已经完成了。
