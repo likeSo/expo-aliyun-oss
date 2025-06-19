@@ -135,6 +135,9 @@ function App() {
   deleteObjectsAsync(fileKeys: string[]): Promise<any>
 ```
 
+## 联系我
+QQ群：682911244
+
 ## 线路图 Roadmap
 
 - [x] 使用STS临时安全令牌的方式初始化阿里云
