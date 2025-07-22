@@ -9,6 +9,7 @@ import com.alibaba.sdk.android.oss.ServiceException
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback
 import com.alibaba.sdk.android.oss.callback.OSSProgressCallback
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider
+import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider
 import com.alibaba.sdk.android.oss.model.DeleteMultipleObjectRequest
 import com.alibaba.sdk.android.oss.model.DeleteMultipleObjectResult
 import com.alibaba.sdk.android.oss.model.PutObjectRequest
@@ -72,7 +73,11 @@ class ExpoAliyunOSSModule : Module() {
             endpoint = _endpoint
         }
 
-        Function("initWithSTS") { ossAccessKeySecretID: String, ossAccessKeySecret: String, token: String, bucket: String, endpoint: String ->
+        Function("initWithSTS") { ossAccessKeySecretID: String,
+                                  ossAccessKeySecret: String,
+                                  token: String,
+                                  bucket: String,
+                                  _endpoint: String ->
             val credentialProvider = OSSStsTokenCredentialProvider(
                 ossAccessKeySecretID,
                 ossAccessKeySecret,

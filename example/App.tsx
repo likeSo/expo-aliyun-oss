@@ -15,26 +15,8 @@ export default function App() {
         <Group name="Constants">
           <Text>{ExpoAliyunOSS.PI}</Text>
         </Group>
-        <Group name="Functions">
-          <Text>{ExpoAliyunOSS.hello()}</Text>
-        </Group>
-        <Group name="Async functions">
-          <Button
-            title="Set value"
-            onPress={async () => {
-              await ExpoAliyunOSS.setValueAsync('Hello from JS!');
-            }}
-          />
-        </Group>
         <Group name="Events">
           <Text>上传进度：{onUploadProgress?.uploadedSize}/{onUploadProgress?.totalSize}；{onUploadProgress?.fileKey}</Text>
-        </Group>
-        <Group name="Views">
-          <ExpoAliyunOSSView
-            url="https://www.example.com"
-            onLoad={({ nativeEvent: { url } }) => console.log(`Loaded: ${url}`)}
-            style={styles.view}
-          />
         </Group>
         <Group name='Pick Image'>
           <Button title='选择图片' onPress={async () => {

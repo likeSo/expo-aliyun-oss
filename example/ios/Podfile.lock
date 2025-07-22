@@ -9,7 +9,7 @@ PODS:
     - React-Core
   - Expo (52.0.23):
     - ExpoModulesCore
-  - ExpoAliyunOSS (0.1.5):
+  - ExpoAliyunOSS (0.1.6):
     - AliyunOSSiOS (~> 2.10.22)
     - ExpoModulesCore
   - ExpoAsset (11.0.1):
@@ -1794,7 +1794,7 @@ SPEC CHECKSUMS:
   EXConstants: 277129d9a42ba2cf1fad375e7eaa9939005c60be
   EXImageLoader: e5da974e25b13585c196b658a440720c075482d5
   Expo: cac199e7cbd1f9b5ae7047c4294a372d6ff28a88
-  ExpoAliyunOSS: 58e9658a8309e7f2763ff3bf37bf8593a98f795f
+  ExpoAliyunOSS: a8b7e095e62ccb131036dec631db00318e1a4fc1
   ExpoAsset: 6f7a8887cbb9fb39fdb0808e7f6f74ba0e1ae9b6
   ExpoFileSystem: a38e1bb58d77f41717293a7b73ebd4014d8cb8dd
   ExpoFont: b089994dac1fe603deda1cec151e32c81f46c2f1
