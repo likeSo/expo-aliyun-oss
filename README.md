@@ -135,6 +135,12 @@ function App() {
   deleteObjectsAsync(fileKeys: string[]): Promise<any>
 ```
 
+## 常见问题
+
+### Failure [INSTALL_PARSE_FAILED_MANIFEST_MALFORMED: Failed parse during installPackageLI: /data/app/vmdl2029164326.tmp/base.apk (at Binary XML file line #60): <meta-data> requires an android:value or android:resource attribute]
+
+请正确按照文档配置config plugin.
+
 ## 联系我
 QQ群：682911244
 
