@@ -18,6 +18,8 @@
 npx expo install expo-aliyun-oss
 ```
 
+请注意，expo go不支持带有原生代码的三方框架，你应该使用`npx expo run:ios`，编译原生代码并启动项目。
+
 ## 配置 Configure
 
 阿里云需要配置`accessKeyId`以及`accessKeySecret`等字段才可以使用。
