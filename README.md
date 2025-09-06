@@ -23,6 +23,9 @@ npx expo install expo-aliyun-oss
 ## 配置 Configure
 
 阿里云需要配置`accessKeyId`以及`accessKeySecret`等字段才可以使用。
+有两种方式配置这些字段，分别是静态配置（在`app.json`内配置）和动态配置（手动调用初始化接口）。两个方式都能用，任选其一即可。
+
+### 静态配置
 
 对于安卓和iOS，使用`expo config plugin`，在`app.json`内配置这两个字段，如下所示：
 
@@ -48,11 +51,13 @@ EXPO_PUBLIC_ALIYUN_OSS_ACCESS_KEY_SECRET=ossAccessKeySecret
 EXPO_PUBLIC_ALIYUN_OSS_ENDPOINT=endPoint
 EXPO_PUBLIC_ALIYUN_OSS_BUCKET=bucket
 ```
-
-配置好了后直接使用就行了，鉴权以及初始化的部分就算是完成了。
-
 请注意，环境变量在项目中会被直接替换为明文的内容，官方也不建议把key和secret这种东西放在环境变量内，所以在web端，可以使用代码的方式进行动态初始化。
 
+静态配置写完了后直接使用就行了，鉴权以及初始化的部分就算是完成了。
+
+### 动态配置
+
+手动调用`initWithAK`或者`initWithSTS`方法即可，动态配置的好处是可以延迟初始化。
 
 
 ## 使用 Usage
