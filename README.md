@@ -1,7 +1,9 @@
 ## Expo Aliyun OSS
+
 阿里云OSS SDK for React Native, Expo.
 
 ## 引言
+
 上传文件到阿里云本身不难，用fetch配合formdata即可实现，那为什么还要单独写一个包？
 
 首先，React Native上传，在移动端和web端有差异，web端可以直接上传`File`对象，而移动端需要一个`Blob`对象，也就是类似于这样的对象：
@@ -51,6 +53,7 @@ EXPO_PUBLIC_ALIYUN_OSS_ACCESS_KEY_SECRET=ossAccessKeySecret
 EXPO_PUBLIC_ALIYUN_OSS_ENDPOINT=endPoint
 EXPO_PUBLIC_ALIYUN_OSS_BUCKET=bucket
 ```
+
 请注意，环境变量在项目中会被直接替换为明文的内容，官方也不建议把key和secret这种东西放在环境变量内，所以在web端，可以使用代码的方式进行动态初始化。
 
 静态配置写完了后直接使用就行了，鉴权以及初始化的部分就算是完成了。
@@ -59,41 +62,35 @@ EXPO_PUBLIC_ALIYUN_OSS_BUCKET=bucket
 
 手动调用`initWithAK`或者`initWithSTS`方法即可，动态配置的好处是可以延迟初始化。
 
-
 ## 使用 Usage
 
 如果你已经配置好了Config Plugin，那么直接使用就行了，初始化部分已经完成了。
 否则在以下的两个初始化方法中任选一个即可。
 
 ```ts
-import ExpoAliyunOSS from 'expo-aliyun-oss';
-import * as ImagePicker from 'expo-image-picker'
+import ExpoAliyunOSS from "expo-aliyun-oss";
+import * as ImagePicker from "expo-image-picker";
 
-const result = await ImagePicker.launchImageLibraryAsync({ selectionLimit: 1 })
+const result = await ImagePicker.launchImageLibraryAsync({ selectionLimit: 1 });
 if (!result.canceled) {
-  const fileKey = "images/xxx.png"
-	const uploadResult = await ExpoAliyunOSS.uploadAsync(result.asset[0].uri, fileKey)	
-  const uploadedUri = "https://bucket.endpoint/fileKey"
+  const fileKey = "images/xxx.png";
+  const uploadResult = await ExpoAliyunOSS.uploadAsync(
+    result.asset[0].uri,
+    fileKey
+  );
+  const uploadedUri = "https://bucket.endpoint/fileKey";
 }
 ```
-
-
 
 ## 上传进度条 Upload progress
 
-
-
 ```tsx
 function App() {
-  const onUploadProgress = useEvent(ExpoAliyunOSS, 'uploadProgress');
-  
+  const onUploadProgress = useEvent(ExpoAliyunOSS, "uploadProgress");
+
   // onUploadProgress {uploadedSize, totalSize, fileKey}
 }
 ```
-
-
-
-
 
 ## API
 
@@ -130,7 +127,7 @@ function App() {
   ): void;
 
   /**
-   * 异步上传文件 
+   * 异步上传文件
    * @param fileUriOrBase64 文件本地URI或者Base64格式的文件内容
    * @param fileKey 文件在阿里云OSS的存储目录，包含路径和文件名
    */
@@ -140,6 +137,16 @@ function App() {
    * @param fileKeys 待删除的文件列表
    */
   deleteObjectsAsync(fileKeys: string[]): Promise<any>
+
+  /**
+   * 获取所有存储桶。
+   */
+  listBuckets(): Promise<any[]>;
+
+  /**
+   * 新建存储桶。
+   */
+  createBucket(options: CreateBucketOptions): Promise<void>;
 ```
 
 ## 常见问题
@@ -149,10 +156,11 @@ function App() {
 请正确按照文档配置config plugin.
 
 ## 联系我
+
 QQ群：682911244
 
 ## 线路图 Roadmap
 
-- [x] 使用STS临时安全令牌的方式初始化阿里云
-- [ ] `.listBuckets()`
-- [ ] `.createBucket()`
+- [x] 使用STS临时安全令牌的方式初始化阿里云。
+- [x] `.listBuckets()` 列举所有存储桶。
+- [x] `.createBucket()` 新建存储桶。

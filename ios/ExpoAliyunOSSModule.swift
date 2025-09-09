@@ -113,5 +113,74 @@ public class ExpoAliyunOSSModule: Module {
                 })
             }
         }
+        
+        AsyncFunction("listBuckets") { (promise: Promise) in
+            if ossClient != nil {
+                let request = OSSGetServiceRequest()
+                let task = ossClient?.getService(request)
+                task?.continue({ result in
+                    if result.error != nil {
+                        promise.reject(result.error!)
+                    } else {
+                        if let serviceRequest = result.result as? OSSGetServiceResult, serviceRequest.buckets != nil, !serviceRequest.buckets!.isEmpty {
+                            let bucketList: [[String: Any?]] = serviceRequest.buckets!.compactMap { bucket in
+                                if let bucketMap = bucket as? [String: Any] {
+                                    return bucketMap.mapKeys{ $0.firstLetterLowercased }
+                                }
+                                return nil
+                            }
+                            promise.resolve(bucketList)
+                        } else {
+                            promise.reject("ERR_NO_BUCKETS", "No buckets found")
+                        }
+                    }
+                    return nil
+                })
+            }
+        }
+        
+        AsyncFunction("createBucket") { (options: CreateBucketOptions, promise: Promise) in
+            if ossClient != nil {
+                let request = OSSCreateBucketRequest()
+                request.bucketName = options.bucketName
+                if let permission = options.permission {
+                    request.xOssACL = permission
+                }
+                if options.storageClass == "ia" {
+                    request.storageClass = OSSBucketStorageClass.IA
+                } else if options.storageClass == "archive" {
+                    request.storageClass = OSSBucketStorageClass.archive
+                } else {
+                    request.storageClass = OSSBucketStorageClass.standard
+                }
+                let task = ossClient?.createBucket(request)
+                task?.continue({ result in
+                    if result.error != nil {
+                        promise.reject(result.error!)
+                    } else {
+                        promise.resolve()
+                    }
+                })
+            }
+        }
+    }
+}
+
+extension String {
+    var firstLetterLowercased: String {
+        guard let firstChar = first else { return self }
+        return firstChar.lowercased() + dropFirst()
+    }
+}
+
+
+extension Dictionary {
+    func mapKeys<T>(_ transform: (Key) throws -> T) rethrows -> [T: Value] {
+        var result = [T: Value]()
+        for (key, value) in self {
+            let newKey = try transform(key)
+            result[newKey] = value
+        }
+        return result
     }
 }

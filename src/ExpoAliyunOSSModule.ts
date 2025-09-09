@@ -1,6 +1,9 @@
 import { NativeModule, requireNativeModule } from "expo";
 
-import { ExpoAliyunOSSModuleEvents } from "./ExpoAliyunOSS.types";
+import {
+  CreateBucketOptions,
+  ExpoAliyunOSSModuleEvents,
+} from "./ExpoAliyunOSS.types";
 
 declare class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
   /**
@@ -44,6 +47,16 @@ declare class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents
     bucket: string,
     endpoint: string
   ): void;
+
+  /**
+   * 获取所有存储桶。
+   */
+  listBuckets(): Promise<any[]>;
+
+  /**
+   * 新建存储桶。
+   */
+  createBucket(options: CreateBucketOptions): Promise<void>;
 }
 
 // This call loads the native module object from the JSI.

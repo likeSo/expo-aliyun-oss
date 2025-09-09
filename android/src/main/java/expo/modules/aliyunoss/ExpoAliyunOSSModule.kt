@@ -10,10 +10,16 @@ import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback
 import com.alibaba.sdk.android.oss.callback.OSSProgressCallback
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider
+import com.alibaba.sdk.android.oss.model.CannedAccessControlList
+import com.alibaba.sdk.android.oss.model.CreateBucketRequest
+import com.alibaba.sdk.android.oss.model.CreateBucketResult
 import com.alibaba.sdk.android.oss.model.DeleteMultipleObjectRequest
 import com.alibaba.sdk.android.oss.model.DeleteMultipleObjectResult
+import com.alibaba.sdk.android.oss.model.ListBucketsRequest
+import com.alibaba.sdk.android.oss.model.ListBucketsResult
 import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.alibaba.sdk.android.oss.model.PutObjectResult
+import com.alibaba.sdk.android.oss.model.StorageClass
 import expo.modules.kotlin.Promise
 import expo.modules.kotlin.exception.CodedException
 import expo.modules.kotlin.modules.Module
@@ -173,6 +179,96 @@ class ExpoAliyunOSSModule : Module() {
                         }
 
                     })
+            }
+        }
+
+        AsyncFunction("listBuckets") { promise: Promise ->
+            if (ossClient != null) {
+                val request = ListBucketsRequest()
+                ossClient?.asyncListBuckets(
+                    request,
+                    object : OSSCompletedCallback<ListBucketsRequest, ListBucketsResult> {
+                        override fun onSuccess(
+                            request: ListBucketsRequest?,
+                            result: ListBucketsResult?
+                        ) {
+                            if (result != null && result.buckets != null) {
+                                val buckets = result.buckets.map { it ->
+                                    return@map mapOf(
+                                        "name" to it.name,
+                                        "location" to it.location,
+                                        "creationDate" to it.createDate.time,
+                                        "storageClass" to it.storageClass
+                                    )
+                                }
+                                promise.resolve(buckets)
+                            } else {
+                                promise.reject(
+                                    CodedException(
+                                        "ERR_NO_BUCKETS",
+                                        "No Buckets found",
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        override fun onFailure(
+                            request: ListBucketsRequest?,
+                            clientException: ClientException?,
+                            serviceException: ServiceException?
+                        ) {
+                            val throwable = clientException ?: serviceException
+                            promise.reject(
+                                CodedException(
+                                    "Cannot list buckets. Client Exception：${clientException.toString()}，Service Exception: ${serviceException.toString()}",
+                                    throwable
+                                )
+                            )
+                        }
+
+                    })
+            }
+        }
+
+        AsyncFunction("createBucket") { options: CreateBucketOptions, promise: Promise ->
+            if (ossClient != null) {
+                val request = CreateBucketRequest(options.bucketName)
+                request.bucketACL = when (options.permission) {
+                    "private" -> CannedAccessControlList.Private
+                    "public-read" -> CannedAccessControlList.PublicRead
+                    "public-read-write" -> CannedAccessControlList.PublicReadWrite
+                    else -> CannedAccessControlList.Default
+                }
+
+                request.bucketStorageClass = when (options.storageClass) {
+                    "archive" -> StorageClass.Archive
+                    "ia" -> StorageClass.IA
+                    else -> StorageClass.Standard
+                }
+                ossClient?.asyncCreateBucket(request, object : OSSCompletedCallback<CreateBucketRequest, CreateBucketResult> {
+                    override fun onSuccess(
+                        request: CreateBucketRequest?,
+                        result: CreateBucketResult?
+                    ) {
+                        promise.resolve()
+                    }
+
+                    override fun onFailure(
+                        request: CreateBucketRequest?,
+                        clientException: ClientException?,
+                        serviceException: ServiceException?
+                    ) {
+                        val throwable = clientException ?: serviceException
+                        promise.reject(
+                            CodedException(
+                                "Cannot create bucket. Client Exception：${clientException.toString()}，Service Exception: ${serviceException.toString()}",
+                                throwable
+                            )
+                        )
+                    }
+
+                })
             }
         }
 
