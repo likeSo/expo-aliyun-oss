@@ -85,6 +85,9 @@ if (!result.canceled) {
 ## 上传进度条 Upload progress
 
 ```tsx
+import {useEvent} from 'expo'
+
+
 function App() {
   const onUploadProgress = useEvent(ExpoAliyunOSS, "uploadProgress");
 
@@ -94,59 +97,70 @@ function App() {
 
 ## API
 
+### initWithSTS
+使用阿里云STS临时安全令牌初始化。token存在有效期限制，生命周期内可以多次初始化。
+
 ```ts
+initWithSTS(
+  ossAccessKeySecretID: string,  // 阿里云Access Key ID
+  ossAccessKeySecret: string,    // 阿里云Access Key Secret
+  token: string,                 // 临时token
+  bucket: string,                // 阿里云bucket
+  endpoint: string               // 阿里云endpoint，比如oss-cn-beijing.aliyuncs.com
+): void;
+```
 
-  /**
-   * 使用阿里云AK初始化。生命周期内只需要初始化一次，好用，但是安全性较低。目前阿里云官方不推荐这种初始化方式。
-   * @param ossAccessKeySecretID 阿里云Access Key ID
-   * @param ossAccessKeySecret 阿里云Access Key Secret
-   * @param bucket 阿里云bucket
-   * @param endpoint 阿里云endpoint，比如oss-cn-beijing.aliyuncs.com
-   */
-  initWithAK(
-    ossAccessKeySecretID: string,
-    ossAccessKeySecret: string,
-    bucket: string,
-    endpoint: string
-  ): void;
+### initWithAK
+使用阿里云AK初始化。生命周期内只需要初始化一次，好用，但是安全性较低。目前阿里云官方不推荐这种初始化方式。
 
-  /**
-   * 使用阿里云STS临时安全令牌初始化。token存在有效期限制，生命周期内可以多次初始化。
-   * @param ossAccessKeySecretID 阿里云Access Key ID
-   * @param ossAccessKeySecret 阿里云Access Key Secret
-   * @param token 临时token
-   * @param bucket 阿里云bucket
-   * @param endpoint 阿里云endpoint，比如oss-cn-beijing.aliyuncs.com
-   */
-  initWithSTS(
-    ossAccessKeySecretID: string,
-    ossAccessKeySecret: string,
-    token: string,
-    bucket: string,
-    endpoint: string
-  ): void;
+```ts
+initWithAK(
+  ossAccessKeySecretID: string,  // 阿里云Access Key ID
+  ossAccessKeySecret: string,    // 阿里云Access Key Secret
+  bucket: string,                // 阿里云bucket
+  endpoint: string               // 阿里云endpoint，比如oss-cn-beijing.aliyuncs.com
+): void;
+```
 
-  /**
-   * 异步上传文件
-   * @param fileUriOrBase64 文件本地URI或者Base64格式的文件内容
-   * @param fileKey 文件在阿里云OSS的存储目录，包含路径和文件名
-   */
-  uploadAsync(fileUriOrBase64: string, fileKey: string): Promise<any>;
-  /**
-   * 批量删除文件
-   * @param fileKeys 待删除的文件列表
-   */
-  deleteObjectsAsync(fileKeys: string[]): Promise<any>
+### uploadAsync
+异步上传文件
 
-  /**
-   * 获取所有存储桶。
-   */
-  listBuckets(): Promise<any[]>;
+```ts
+uploadAsync(
+  fileUriOrBase64: string,  // 文件本地URI或者Base64格式的文件内容
+  fileKey: string           // 文件在阿里云OSS的存储目录，包含路径和文件名
+): Promise<any>;
+```
 
-  /**
-   * 新建存储桶。
-   */
-  createBucket(options: CreateBucketOptions): Promise<void>;
+### deleteObjectsAsync
+批量删除文件
+
+```ts
+deleteObjectsAsync(
+  fileKeys: string[]  // 待删除的文件列表
+): Promise<any>;
+```
+
+### listBuckets
+获取所有存储桶
+
+```ts
+listBuckets(): Promise<any[]>;
+```
+
+### createBucket
+新建存储桶
+
+```ts
+createBucket(
+  options: CreateBucketOptions  // 创建存储桶的配置选项
+): Promise<void>;
+
+export interface CreateBucketOptions {
+  bucketName: string;
+  permission?: string;
+  storageClass?: string
+}
 ```
 
 ## 常见问题
