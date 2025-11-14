@@ -1,7 +1,7 @@
 {
   "name": "expo-aliyun-oss",
-  "version": "0.1.8",
-  "description": "Exoo Aliyun OSS module",
+  "version": "0.1.9",
+  "description": "阿里云OSS SDK for Expo. 支持创建、删除、上传、下载、删除多个文件、列出所有文件等操作。",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -20,6 +20,7 @@
   "keywords": [
     "react-native",
     "expo",
+    "aliyun",
     "expo-aliyun-oss",
     "ExpoAliyunOSS"
   ],

@@ -1,6 +1,9 @@
 import { registerWebModule, NativeModule } from "expo";
 
-import { ExpoAliyunOSSModuleEvents } from "./ExpoAliyunOSS.types";
+import {
+  CreateBucketOptions,
+  ExpoAliyunOSSModuleEvents,
+} from "./ExpoAliyunOSS.types";
 import { Buffer } from "buffer";
 
 const OSS = require("ali-oss");
@@ -107,6 +110,27 @@ class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
       return Promise.reject("OSS client not initialized");
     }
     return this.ossClient.deleteMulti(fileKeys, { quiet: true });
+  }
+
+  createBucketAsync(options: CreateBucketOptions): Promise<void> {
+    if (!this.ossClient) {
+      return Promise.reject("OSS client not initialized");
+    }
+    const storageClass =
+      options.storageClass?.replace(/^\w/, (c) => c.toUpperCase()) ||
+      "Standard";
+    return this.ossClient.putBucket(options.bucketName, {
+      storageClass,
+      acl: options.permission,
+      // dataRedundancyType: options.dataRedundancyType,
+    });
+  }
+
+  listBuckets(): Promise<any[]> {
+    if (!this.ossClient) {
+      return Promise.reject("OSS client not initialized");
+    }
+    return this.ossClient.listBuckets();
   }
 }
 

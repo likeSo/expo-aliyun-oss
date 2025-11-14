@@ -5,15 +5,19 @@ export type ExpoAliyunOSSModuleEvents = {
 export type ChangeEventPayload = {
   uploadedSize: number;
   totalSize: number;
-  fileKey: string
+  fileKey: string;
 };
 
 export interface CreateBucketOptions {
   bucketName: string;
-  permission?: string;
-  storageClass?: string
+  permission?: BucketAccessPermission;
+  storageClass?: BucketStorageClass;
 }
 
-export type BucketAccessPermission = 'private' | 'public-read' | 'public-read-write' | 'default'
+export type BucketAccessPermission =
+  | "private"
+  | "public-read"
+  | "public-read-write"
+  | "default";
 
-export type BucketStorageClass = 'standard' | 'ia' | 'archive'
+export type BucketStorageClass = "standard" | "ia" | "archive";
