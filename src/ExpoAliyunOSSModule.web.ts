@@ -112,7 +112,7 @@ class ExpoAliyunOSSModule extends NativeModule<ExpoAliyunOSSModuleEvents> {
     return this.ossClient.deleteMulti(fileKeys, { quiet: true });
   }
 
-  createBucketAsync(options: CreateBucketOptions): Promise<void> {
+  createBucket(options: CreateBucketOptions): Promise<void> {
     if (!this.ossClient) {
       return Promise.reject("OSS client not initialized");
     }
